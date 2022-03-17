@@ -19,11 +19,14 @@ public class CharacterMovementValues
 
 public abstract class CharacterControllerBase : MonoBehaviour
 {
-    //Variable containing values for charcter movement
-    [SerializeField] CharacterMovementValues _characterMovementValues;
-    public CharacterMovementValues GetCharacterMovementValues() { return _characterMovementValues; }
-
+    [Header("Character Movement Values")]
     [SerializeField] float _currentMovementSpeed;
+
+    //Variable containing values for charcter movement
+    [SerializeField] CharacterMovementValues _movementValues;
+    public CharacterMovementValues GetCharacterMovementValues() { return _movementValues; }
+
+    
     public float GetCurrentMovementSpeed() { return _currentMovementSpeed; }
     
     //Character State Machine
@@ -77,12 +80,12 @@ public abstract class CharacterControllerBase : MonoBehaviour
 
     public void Accelerate()
     {
-        if (_currentMovementSpeed < _characterMovementValues.MaxMovementSpeed) { _currentMovementSpeed += _characterMovementValues.Acceleration; }
+        if (_currentMovementSpeed < _movementValues.MaxMovementSpeed) { _currentMovementSpeed += _movementValues.Acceleration; }
     }
 
     public void Decelerate()
     {
-        if (_currentMovementSpeed >= 0) _currentMovementSpeed -= _characterMovementValues.Deceleration;
+        if (_currentMovementSpeed >= 0) _currentMovementSpeed -= _movementValues.Deceleration;
 
         if (_currentMovementSpeed < 0) _currentMovementSpeed = 0.0f;
     }

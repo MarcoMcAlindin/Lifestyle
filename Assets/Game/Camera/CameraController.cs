@@ -5,7 +5,6 @@ using UnityEngine;
 [System.Serializable]
 public class CameraTransformPositions
 {
-    [Header("Camera Transforms")]
     [SerializeField] public Transform[] cameraTransforms = new Transform[3];
    
     [SerializeField] public int transformIndex = 1;
@@ -19,27 +18,43 @@ public class CameraTransformPositions
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] CameraTransformPositions _cameraTransformPositions;
-    public CameraTransformPositions GetCameraTransformPositions() { return _cameraTransformPositions; }
-
-    PlayerController _player;
-    public PlayerController GetPlayer() { return _player; }
+    //------- EDITOR VISIBLE VARS---------
 
     //Variables to do with target camera is looking at
     [Header("Look Target")]
     [SerializeField] public Vector3 _lookTargetposition;
 
-    //Default Camera behaviour var
-    ICameraBehaviour _currentCameraBehaviour;
-
+    [Header("Player")]
     [SerializeField]private Vector3 _offsetWithPlayer;
-    public Vector3 GetOffsetWithPlayer() { return _offsetWithPlayer; }
 
     [Header("Camera Movement Stats")]
     [SerializeField] public float _cameraRotationSpeed = 125.0f;
     [SerializeField] public float _cameraTranslationSpeed = 2.0f;
 
     [SerializeField] public float _timeToPositionReset = 5.0f;
+
+    [Header("Camera Positions")]
+    [SerializeField] CameraTransformPositions _cameraTransformPositions;
+
+    //------------------------------
+
+    //Default Camera behaviour var
+    ICameraBehaviour _currentCameraBehaviour;
+
+    //Player controller
+    PlayerController _player;
+    public PlayerController GetPlayer() { return _player; }
+
+    //------ Getters and Setters
+
+    //Camera transform positions
+    public CameraTransformPositions GetCameraTransformPositions() { return _cameraTransformPositions; }
+
+    //Pffset with player
+    public Vector3 GetOffsetWithPlayer() { return _offsetWithPlayer; }
+
+
+
 
     private void Awake()
     {
@@ -51,8 +66,6 @@ public class CameraController : MonoBehaviour
 
         //Set default look Target Position (roughly player Head)
         _lookTargetposition = new Vector3(_player.transform.position.x, _player.transform.position.y + 1.5f, _player.transform.position.z);
-
-        
 
         //Assign default behaviour 
         _currentCameraBehaviour = new CameraDefaultBehaviour();
@@ -69,13 +82,14 @@ public class CameraController : MonoBehaviour
         _lookTargetposition = position;
     }
 
+    //Update offset with player
     public void UpdatePlayerOffset()
     {
         _offsetWithPlayer = transform.position - _player.transform.position;
     }
 
 
-    //ROTATION FUNCTIONS
+    //-------ROTATION FUNCTIONS---------
 
     //Rotate Around X axis using right stick value as parameter
     public void RotateAroundXAxis(float inputValue)
@@ -100,9 +114,7 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    /*****************************************
-     * Rotate Camera around x Axis of player *
-     *****************************************/
+    //Rotate Around Y axis using right stick value as parameter
     public void RotateAroundYAxis(float inputValue)
     {
         //Check input value is not around null values
